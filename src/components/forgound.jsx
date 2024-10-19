@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./card";
 import { motion } from "framer-motion";
 import { useRef } from "react";
@@ -8,54 +8,48 @@ import { useContext } from "react";
 import UserContext from "../Context/UserContext";
 
 function Forgound() {
-  // here we make the
+ 
   const ref = useRef(null);
-  const {dataArray} = useContext(UserContext);
-  console.log(dataArray);
+  const { dataArray , setGloStorageArray , gloStorageArray,EditHandler } = useContext(UserContext);
+  const [curtTaskArray, setcurtTaskArray] = useState(dataArray);
+  useEffect(()=>{
+    setcurtTaskArray([...gloStorageArray]);
 
-  const cardData = [
-    {
-      description:
-        dataArray.descData,
-      fileSize: "0.0mb",
-      fileName:dataArray.fileName,
-      close: "true",
-      tags: {
-        isOpen: "fale",
-        tagTittle: "Downlowd.",
-        tagcolor: "aquamarine",
-      },
-    },
-    {
-      description:
-        " it's your birthdat man it's your birthdy❤️ Voluptatem nisi laborum aspernatur",
-      fileSize: "0.10mb",
-      close: "true",
-      tags: {
-        isOpen: "true",
-        tagTittle: "Download.",
-        tagcolor: "cornflowerblue",
-      },
-    },
-  ];
+  },[gloStorageArray])
 
-  
+  // debug 05
+  useEffect(() => {
+    let copyArray = JSON.parse(localStorage.getItem("maintask")) ||[];
+      setcurtTaskArray(copyArray);
+      setGloStorageArray(copyArray);
+      
+      // if (localStorage.getItem("maintask") === " " ){
+      //   console.log("localStorage : is empty");
+      // }
+      //   else {
+      //     // console.log("localstorage: get something ");
+      //   }
+
+      
+
+    
+
+  }, []);
+
 
   return (
-    <div>
+    <div className="for_return-div absolute">
       <motion.div
         ref={ref}
-        className=" w-screen h-screen absolute  flex flex-wrap gap-6"
+        className=" motion_div w-screen h-screen  flex flex-wrap gap-x-4 gap-y-4 p-5"
       >
-        {dataArray.map((itme, index) => (
-          <Card key={index} data={itme} refrence={ref} />
+        {curtTaskArray.map((itme, index) => (
+          <Card key={index} data={itme} refrence={ref} id={index}  />
         ))}
       </motion.div>
 
-      <Link to="/textEditor" className=" absolute bottom-1 right-2 px-5 py-5 ">
-        
-          <IoIosAdd size="45px" className="  bg-black text-white rounded-lg" />
-        
+      <Link to="/textEditor" className=" fixed bottom-1 right-2 px-5 py-5 ">
+        <IoIosAdd size="45px" className="  bg-black text-white rounded-lg" />
       </Link>
     </div>
   );

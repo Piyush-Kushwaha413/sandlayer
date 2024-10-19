@@ -4,14 +4,17 @@ import ContextProvider from "./Context/contextProvider.jsx"
 
 
 
+
 function App() {
   return (
-    <ContextProvider>
+   
+     <ContextProvider>
      <div>
        <RoutePage></RoutePage>
      </div>
  
-  </ContextProvider>
+   </ContextProvider>
+
   )
 }
 

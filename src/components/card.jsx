@@ -1,29 +1,84 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaRegFileAlt } from "react-icons/fa";
 import { LuDownload } from "react-icons/lu";
 import { SlOptionsVertical } from "react-icons/sl";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+// degbug 01
+import  UserContext  from "../Context/UserContext";
+import { useState } from "react";
 
-function Card({ data, refrence }) {
-  // here we want data object to showe data
-  // but her we give just data Object-property
+function Card({ data, refrence ,id }) {
+  const nevigates = useNavigate();
+  const {deleteHandler, windowDocHandler,index, setIndex, EditHandler,setEditMode, setEditOject,} = useContext(UserContext);
+  const [ShowMenuBox, setShowMenubox] = useState(false);
 
-  // const dynamicColor = data.tags.tagcolor;
+  const MenuBar = ()=>{
+    return(
+    <div className=" absolute text-sm bg-white bg-opacity-20  text-black right-2  rounded  pl-0  ">
+            <ul>
+              <li  className=" cursor-pointer hover:bg-black hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded px-2"
+                onClick={()=>{
+                   setIndex(id);
+                   windowDocHandler(id);
+                   setShowMenubox(prev =>(!prev));
+
+                }}>Open</li>
+              <li className=" cursor-pointer hover:bg-black  hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded  px-2" 
+              onClick={()=>{
+                deleteHandler(id);
+                // console.log(id);
+                setShowMenubox(prev =>(!prev));
+                }}>Delete</li>
+                
+              <li  className=" cursor-pointer hover:bg-zinc-950 hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded px-2"
+              onClick={()=>{
+                setEditOject(id);
+                EditHandler(id);        
+                setShowMenubox(prev =>(!prev));
+              }} >Edit</li>
+              <li  className=" cursor-pointer hover:bg-zinc-950 hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded px-2" >Marke Star</li>
+              <li  className=" cursor-pointer hover:bg-zinc-950 hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded px-2" >Move Archive</li>
+            </ul>
+           </div>
+          )
+  }
+  const Nothing = ()=>{
+    <div className=" text-sm"> h</div>
+
+  }
 
   return (
     <motion.div
       drag
       dragConstraints={refrence}
+      onDoubleClick={()=>{
+        // setIndex(id);
+        windowDocHandler(id);
+     }}
       className=" card relative h-[240px] w-[210px] rounded-[30px]  bg-zinc-950 text-zinc-100 pt-4 overflow-hidden"
     >
       {/* top part */}
-      <div className="top mx-4">
+      <div className="top mx-4" >
         <div className=" flex justify-between">
-          <Link to="/DocWindow">
-            <FaRegFileAlt size="20px" />
-          </Link>
-          <SlOptionsVertical  size="17px" />
+          
+            <FaRegFileAlt size="20px"
+            onClick={()=>{
+              //  setIndex(id);
+               windowDocHandler(id);
+            }}
+             className="active:bg-violet-700"/>
+          
+          <div> 
+          <SlOptionsVertical 
+          className=" cursor-pointer focus:text-black focus:ring-violet-300"
+          onClick={() =>{ 
+            setShowMenubox(prev =>(!prev))
+            ;}}
+          size="17px" />
+           {ShowMenuBox?<MenuBar/>:<Nothing/>} 
+          </div>
+         
         </div>
         <p
         dangerouslySetInnerHTML={{ __html:data.descData }}  
