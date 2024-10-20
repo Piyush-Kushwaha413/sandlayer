@@ -1,4 +1,4 @@
-# Learn from chai aur code
+# Love chai and  chai aur code
 ## Install
 this is some installation instructions
 ```bash
