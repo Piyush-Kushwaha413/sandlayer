@@ -4,7 +4,6 @@ import { LuDownload } from "react-icons/lu";
 import { SlOptionsVertical } from "react-icons/sl";
 import { motion } from "framer-motion";
 import { Link,useNavigate } from "react-router-dom";
-// degbug 01
 import  UserContext  from "../Context/UserContext";
 import { useState } from "react";
 
@@ -12,10 +11,10 @@ function Card({ data, refrence ,id }) {
   const nevigates = useNavigate();
   const {deleteHandler, windowDocHandler,index, setIndex, EditHandler,setEditMode, setEditOject,} = useContext(UserContext);
   const [ShowMenuBox, setShowMenubox] = useState(false);
-
+  const des_prev =  `${data.descData.substring(0, 150)}...`;
   const MenuBar = ()=>{
     return(
-    <div className=" absolute text-sm bg-white bg-opacity-20  text-black right-2  rounded  pl-0  ">
+    <div className=" absolute text-sm bg-white bg-opacity-80 text-black right-2  rounded  pl-0  ">
             <ul>
               <li  className=" cursor-pointer hover:bg-black hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded px-2"
                 onClick={()=>{
@@ -27,7 +26,7 @@ function Card({ data, refrence ,id }) {
               <li className=" cursor-pointer hover:bg-black  hover:border-[0.5px] border-slate-300 hover:text-slate-200 hover:rounded  px-2" 
               onClick={()=>{
                 deleteHandler(id);
-                // console.log(id);
+          
                 setShowMenubox(prev =>(!prev));
                 }}>Delete</li>
                 
@@ -64,7 +63,6 @@ function Card({ data, refrence ,id }) {
           
             <FaRegFileAlt size="20px"
             onClick={()=>{
-              //  setIndex(id);
                windowDocHandler(id);
             }}
              className="active:bg-violet-700"/>
@@ -81,8 +79,11 @@ function Card({ data, refrence ,id }) {
          
         </div>
         <p
-        dangerouslySetInnerHTML={{ __html:data.descData }}  
-        className=" text-sm text-zinc-100 mt-2 "></p>
+        dangerouslySetInnerHTML={{ __html:des_prev}}  
+        // className=" text-sm text-zinc-100 mt-2  "
+        className={` text-sm text-zinc-100   mt-2 ${ShowMenuBox ? "opacity-1 text-zinc-700" : "" }`}
+
+        ></p>
       </div>
 
       {/* bottom  tags */}
